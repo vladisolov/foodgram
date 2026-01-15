@@ -87,8 +87,6 @@ jobs:
       - build_backend_and_push_to_docker_hub
       - build_proxy_and_push_to_docker_hub
     steps:
-      - name: Change working directory
-        run: cd infra
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Copy docker-compose.production.yml via ssh
@@ -98,8 +96,9 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "docker-compose.production.yml"
-          target: "foodgram"
+          source: "infra/docker-compose.production.yml"
+          target: "/home/${{ secrets.USER }}/foodgram/"
+          strip_components: 1
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
