@@ -18,7 +18,7 @@ router.register('recipes', RecipeViewSet, basename='recipe')
 urlpatterns = [
     path('auth/', include('djoser.urls.authtoken')),
     path(
-        'docs/', TemplateView.as_view(template_name='static/docs/redoc.html'),
+        'docs/', TemplateView.as_view(template_name='redoc.html'),
         name='redoc'
     ),
     path('users/me/avatar/', set_avatar, name='avatar'),
