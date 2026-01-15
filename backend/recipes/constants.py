@@ -1,0 +1,12 @@
+# Валидация полей на максимальное значение длины
+INGREDIENT_MAX_LENGTH = 128
+MEASUREMENT_UNIT_MAX_LENGTH = 64
+OBJECT_TITLE_LIMIT = 64
+RECIPE_MAX_LENGTH = 256
+SLUG_MAX_LENGTH = 32
+TAG_MAX_LENGTH = 32
+URL_MAX_LENGTH = 32
+
+# Валидация полей на минимальное значение
+MIN_COOKING_TIME = 1
+MIN_INGREDIENT_AMOUNT = 1
