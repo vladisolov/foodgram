@@ -1,5 +1,4 @@
 from django.urls import include, path
-from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
 
 from users.views import SubscriptionViewSet, UserViewSet, set_avatar
@@ -17,10 +16,6 @@ router.register('recipes', RecipeViewSet, basename='recipe')
 
 urlpatterns = [
     path('auth/', include('djoser.urls.authtoken')),
-    path(
-        'docs/', TemplateView.as_view(template_name='redoc.html'),
-        name='redoc'
-    ),
     path('users/me/avatar/', set_avatar, name='avatar'),
     path(
         'users/subscriptions/', SubscriptionViewSet.as_view({'get': 'list'}),

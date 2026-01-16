@@ -109,7 +109,6 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
 STATIC_ROOT = BASE_DIR / 'collected_static'
 
 MEDIA_URL = '/media/'
@@ -133,4 +132,4 @@ REST_FRAMEWORK = {
 RESERVED_USERNAME = 'me'
 
 # Host name для генерации короткой ссылки
-SHORT_LINK_HOST_NAME = 'http://foodgram.ddns.net/s/'
+SHORT_LINK_HOST_NAME = 'https://foodgram.ddns.net/s/'

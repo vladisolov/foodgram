@@ -21,7 +21,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-        path = kwargs['path'] or 'static/data/'
+        path = kwargs['path'] or 'data/'
         self.stdout.write(f'Загрузка данных из директории: {path}')
 
         try:

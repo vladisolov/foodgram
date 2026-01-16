@@ -14,7 +14,7 @@ def generate_shopping_list_pdf(ingredients_queryset):
 
         try:
             pdfmetrics.registerFont(TTFont(
-                'DejaVu', 'static/fonts/DejaVuSans.ttf'
+                'DejaVu', 'docs/DejaVuSans.ttf'
             ))
             font_name = 'DejaVu'
         except TTFError:
