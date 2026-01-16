@@ -28,7 +28,7 @@ class RecipeAdmin(admin.ModelAdmin):
     list_display = ('name', 'author', 'text', 'created', 'favorites_count')
     search_fields = ('name', 'author__username')
     list_filter = ('tags', 'created')
-    inlines = [RecipeIngredientInline]
+    inlines = (RecipeIngredientInline,)
     filter_horizontal = ('tags',)
 
     def get_queryset(self, request):
