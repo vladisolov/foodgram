@@ -30,6 +30,24 @@ const Technologies = () => {
               <li className={styles.textItem}>
                 Djoser
               </li>
+              <li className={styles.textItem}>
+                Postgres
+              </li>
+              <li className={styles.textItem}>
+                Django-filter
+              </li>
+              <li className={styles.textItem}>
+                Python-dotenv
+              </li>
+              <li className={styles.textItem}>
+                ReDoc
+              </li>
+              <li className={styles.textItem}>
+                Pillow
+              </li>
+              <li className={styles.textItem}>
+                Reportlab
+              </li>
             </ul>
           </div>
         </div>
