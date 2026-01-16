@@ -38,9 +38,9 @@ def generate_shopping_list_pdf(ingredients_queryset):
                 y = TOP_MARGIN
 
             text = (
-                f'• {ingredient['ingredient__name']} - '
-                f'{ingredient['total_amount']} '
-                f'{ingredient['ingredient__measurement_unit']}'
+                f'• {ingredient["ingredient__name"]} - '
+                f'{ingredient["total_amount"]} '
+                f'{ingredient["ingredient__measurement_unit"]}'
             )
             print(text)
 

@@ -109,7 +109,7 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         for ingredient in ingredients:
             if not Ingredient.objects.filter(id=ingredient['id']).exists():
                 raise serializers.ValidationError(
-                    f'Ингредиент с id={ingredient['id']} не найден.'
+                    f'Ингредиент с id={ingredient["id"]} не найден.'
                 )
 
         return ingredients
