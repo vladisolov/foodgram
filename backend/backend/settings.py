@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv(
     'django-insecure-gjzmp5@4ywg1bf%3uz#gp701bw)0nf#u5lqobx!zl*1k8ah$pw'
 )
 
-DEBUG = os.getenv('DEBUG', False)
+DEBUG = os.getenv('DEBUG', False) == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost, 127.0.0.1').split(', ')
 
@@ -132,4 +132,4 @@ REST_FRAMEWORK = {
 RESERVED_USERNAME = 'me'
 
 # Host name для генерации короткой ссылки
-SHORT_LINK_HOST_NAME = 'https://foodgram.ddns.net/s/'
+HOST_NAME = os.getenv('HOST_NAME')

@@ -7,7 +7,7 @@ from django.utils.crypto import get_random_string
 from .constants import (
     INGREDIENT_MAX_LENGTH, MEASUREMENT_UNIT_MAX_LENGTH, MIN_COOKING_TIME,
     MIN_INGREDIENT_AMOUNT, OBJECT_TITLE_LIMIT, RECIPE_MAX_LENGTH,
-    SLUG_MAX_LENGTH, TAG_MAX_LENGTH, URL_MAX_LENGTH
+    SLUG_MAX_LENGTH, TAG_MAX_LENGTH, URL_TOKEN_MAX_LENGTH
 )
 
 User = get_user_model()
@@ -99,8 +99,8 @@ class Recipe(models.Model):
         Ingredient, through='RecipeIngredient', verbose_name='Ингредиенты'
     )
     tags = models.ManyToManyField(Tag, verbose_name='Теги')
-    short_link = models.URLField(
-        max_length=URL_MAX_LENGTH, blank=True, null=True, unique=True
+    short_link_token = models.CharField(
+        max_length=URL_TOKEN_MAX_LENGTH, blank=True, null=True, unique=True
     )
     created = models.DateTimeField('Дата создания', auto_now_add=True)
 
@@ -110,26 +110,30 @@ class Recipe(models.Model):
         default_related_name = 'recipes'
         ordering = ('-created',)
 
-    def generate_short_link(self):
+    def generate_short_link_token(self):
         max_attempts = 100
         attempts = 0
 
         while attempts < max_attempts:
-            short_link = (
-                settings.SHORT_LINK_HOST_NAME + get_random_string(3)
-            )
+            short_link_token = get_random_string(3)
 
-            if not Recipe.objects.filter(short_link=short_link).exists():
-                return short_link
+            if not Recipe.objects.filter(
+                short_link_token=short_link_token
+            ).exists():
+                return short_link_token
 
             attempts += 1
 
-        return settings.SHORT_LINK_HOST_NAME + get_random_string(4)
+        return get_random_string(4)
 
     def save(self, *args, **kwargs):
-        if not self.short_link:
-            self.short_link = self.generate_short_link()
+        if not self.short_link_token:
+            self.short_link_token = self.generate_short_link_token()
         super().save(*args, **kwargs)
+
+    @property
+    def short_link(self):
+        return f'{settings.HOST_NAME}/s/{self.short_link_token}/'
 
     def __str__(self):
         return self.name[:OBJECT_TITLE_LIMIT]

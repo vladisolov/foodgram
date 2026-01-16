@@ -28,10 +28,8 @@ from .utils import generate_shopping_list_pdf
 def redirect_from_short_link(request, token):
     """Редирект с короткой ссылки на страницу рецепта."""
 
-    short_link = f'{settings.SHORT_LINK_HOST_NAME}{token}'
-    recipe = get_object_or_404(Recipe, short_link=short_link)
-
-    return redirect('api:recipe-detail', pk=recipe.id)
+    recipe = get_object_or_404(Recipe, short_link_token=token)
+    return redirect(f'{settings.HOST_NAME}/recipes/{recipe.id}/')
 
 
 class TagViewSet(ReadOnlyModelViewSet):
