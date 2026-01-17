@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from recipes.models import Ingredient
+from recipes.models import Ingredient, Tag
 
 User = get_user_model()
 
@@ -27,6 +27,7 @@ class Command(BaseCommand):
         try:
             with transaction.atomic():
                 self.load_ingredients(path)
+                self.load_tags(path)
             self.stdout.write(self.style.SUCCESS('Данные успешно загружены'))
         except Exception as e:
             self.stdout.write(
@@ -44,5 +45,19 @@ class Command(BaseCommand):
                     name=row['name'],
                     defaults={
                         'measurement_unit': row['measurement_unit']
+                    }
+                )
+
+    def load_tags(self, path):
+        self.stdout.write('Загрузка тегов...')
+        with open(
+            Path(path) / 'tags.csv', 'r', encoding='utf-8'
+        ) as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                Tag.objects.update_or_create(
+                    name=row['name'],
+                    defaults={
+                        'slug': row['slug']
                     }
                 )

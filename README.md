@@ -10,9 +10,53 @@
 
 ### Содержание
 
+- [Запуск проекта в Docker контейнерах](#запуск-проекта-в-Docker-контейнерах)
 - [Документация API](#документация-api)
 - [Технологический стек](#технологический-стек)
 - [Авторы](#авторы)
+
+### Запуск проекта в Docker контейнерах:
+
+Клонировать репозиторий и перейти в директорию infra/ в командной строке:
+
+```
+git clone git@github.com:vladisolov/foodgram.git
+cd foodgram/infra/
+```
+
+Запустить контейнеры в фоновом режиме:
+
+```
+docker compose up -d
+```
+
+Выполнить миграции:
+
+```
+docker compose exec backend python manage.py migrate
+```
+
+Собрать статику backend и копировать ее на volume static:
+
+```
+docker compose exec backend python manage.py collectstatic
+```
+
+```
+docker compose exec backend cp -r /app/collected_static/. /backend_static/static/
+```
+
+Загрузить тестовые данные в БД из csv-файлов:
+
+```
+docker compose exec backend python manage.py load_data
+```
+
+При необходимости создать админа Django:
+
+```
+docker compose exec backend python manage.py createsuperuser
+```
 
 ### Документация API
 

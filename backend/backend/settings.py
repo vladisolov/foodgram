@@ -128,6 +128,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'api.pagination.LimitPageNumberPagination',
 }
 
+PAGE_SIZE = int(os.getenv('PAGE_SIZE', 6))
+MAX_PAGE_SIZE = int(os.getenv('MAX_PAGE_SIZE', 50))
+
 # Зарезервированное имя пользователя
 RESERVED_USERNAME = 'me'
 

@@ -5,8 +5,14 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFError, TTFont
 from reportlab.pdfgen import canvas
 
+from .constants import (
+    BOTTOM_MARGIN, DOUBLE_LINE_HEIGHT, FONT_SIZE, LEFT_MARGIN, LINE_HEIGHT,
+    PARAGRAPH_INDENTATION, RECIPE_TITLE_LIMIT, RIGHT_MARGIN, TITLE_FONT_SIZE,
+    TOP_MARGIN
+)
 
-def generate_shopping_list_pdf(ingredients_queryset):
+
+def generate_shopping_list_pdf(recipes_queryset, ingredients_queryset):
     """Функция генерирует PDF со списком покупок."""
 
     with io.BytesIO() as buffer:
@@ -20,21 +26,39 @@ def generate_shopping_list_pdf(ingredients_queryset):
         except TTFError:
             font_name = 'Helvetica'
 
-        LEFT_MARGIN = 50
-        TOP_MARGIN = 750
-        LINE_HEIGHT = 20
         y = TOP_MARGIN
 
-        pdf.setFont(font_name, 16)
-        pdf.drawString(LEFT_MARGIN, y, 'Список покупок')
+        pdf.setFont(font_name, TITLE_FONT_SIZE)
+        pdf.drawString(PARAGRAPH_INDENTATION, y, 'Список покупок')
+        y -= DOUBLE_LINE_HEIGHT
 
-        y -= LINE_HEIGHT * 2
-        pdf.setFont(font_name, 12)
+        pdf.setFont(font_name, FONT_SIZE)
+        pdf.drawString(LEFT_MARGIN, y, 'Рецепты:')
+        y -= LINE_HEIGHT
+
+        for i, recipe in enumerate(recipes_queryset, 1):
+            if y < BOTTOM_MARGIN:
+                pdf.showPage()
+                pdf.setFont(font_name, FONT_SIZE)
+                y = TOP_MARGIN
+
+            recipe_name = recipe.name
+            if len(recipe_name) > RECIPE_TITLE_LIMIT:
+                recipe_name = recipe_name[:RECIPE_TITLE_LIMIT] + '...'
+
+            pdf.drawString(PARAGRAPH_INDENTATION, y, f'{i}. {recipe_name}')
+            y -= LINE_HEIGHT
+
+        pdf.line(LEFT_MARGIN, y, RIGHT_MARGIN, y)
+        y -= LINE_HEIGHT
+
+        pdf.drawString(LEFT_MARGIN, y, 'Ингредиенты:')
+        y -= LINE_HEIGHT
 
         for ingredient in ingredients_queryset:
-            if y < 50:
+            if y < BOTTOM_MARGIN:
                 pdf.showPage()
-                pdf.setFont(font_name, 12)
+                pdf.setFont(font_name, FONT_SIZE)
                 y = TOP_MARGIN
 
             text = (
@@ -42,17 +66,19 @@ def generate_shopping_list_pdf(ingredients_queryset):
                 f'{ingredient["total_amount"]} '
                 f'{ingredient["ingredient__measurement_unit"]}'
             )
-            print(text)
 
-            pdf.drawString(LEFT_MARGIN, y, text)
+            pdf.drawString(PARAGRAPH_INDENTATION, y, text)
             y -= LINE_HEIGHT
 
-        pdf.line(LEFT_MARGIN, y, 550, y)
+        pdf.line(LEFT_MARGIN, y, RIGHT_MARGIN, y)
         y -= LINE_HEIGHT
+
         pdf.drawString(
-            LEFT_MARGIN, y, f'Итого позиций: {ingredients_queryset.count()}'
+            LEFT_MARGIN, y,
+            f'Итого наименований ингредиентов: {ingredients_queryset.count()}'
         )
-        y -= LINE_HEIGHT * 2
+        y -= DOUBLE_LINE_HEIGHT
+
         pdf.drawString(
             LEFT_MARGIN, y,
             'Приятных покупок! Возвращайтесь к нам за новыми рецептами!'

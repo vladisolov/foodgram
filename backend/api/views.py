@@ -15,7 +15,6 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from recipes.models import (
     Favorite, Ingredient, Recipe, RecipeIngredient, ShoppingCart, Tag
 )
-
 from .filters import IngredientFilter, RecipeFilter
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (
@@ -141,7 +140,7 @@ class RecipeViewSet(ModelViewSet):
             .order_by('ingredient__name')
         )
 
-        pdf = generate_shopping_list_pdf(ingredients)
+        pdf = generate_shopping_list_pdf(recipes, ingredients)
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = (
             'attachment; filename="shopping_list.pdf"'
