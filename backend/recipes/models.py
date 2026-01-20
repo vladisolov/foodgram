@@ -100,9 +100,12 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(Tag, verbose_name='Теги')
     short_link_token = models.CharField(
-        max_length=URL_TOKEN_MAX_LENGTH, blank=True, null=True, unique=True
+        max_length=URL_TOKEN_MAX_LENGTH, blank=True, null=True, unique=True,
+        verbose_name='Токен короткой ссылки'
     )
-    created = models.DateTimeField('Дата создания', auto_now_add=True)
+    created = models.DateTimeField(
+        auto_now_add=True, verbose_name='Дата создания'
+    )
 
     class Meta:
         verbose_name = 'рецепт'

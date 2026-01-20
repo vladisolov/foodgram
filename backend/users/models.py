@@ -29,7 +29,7 @@ def validate_username(username):
 class UserProfile(AbstractUser):
     username = models.CharField(
         max_length=USERNAME_MAX_LENGTH, unique=True,
-        validators=(validate_username,)
+        validators=(validate_username,), verbose_name='Имя пользователя'
     )
     email = models.EmailField(
         max_length=EMAIL_MAX_LENGTH, unique=True, blank=False,

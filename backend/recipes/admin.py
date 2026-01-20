@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count
 
+from .forms import RecipeIngredientFormSet
 from .models import (
     Favorite, Ingredient, Recipe, RecipeIngredient, ShoppingCart, Tag
 )
@@ -8,7 +9,9 @@ from .models import (
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
-    extra = 1
+    formset = RecipeIngredientFormSet
+    extra = 0
+    min_num = 1
 
 
 @admin.register(Tag)
