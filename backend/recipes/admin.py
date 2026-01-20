@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 
 from .forms import RecipeIngredientFormSet
 from .models import (
@@ -36,7 +36,11 @@ class RecipeAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.annotate(favorite_count=Count('favorite_set'))
+        return queryset.select_related('author').prefetch_related(
+            Prefetch(
+                'recipe_ingredients',
+                queryset=RecipeIngredient.objects.select_related('ingredient')
+            ), 'tags').annotate(favorite_count=Count('favorite_set'))
 
     @admin.display(
         description='Добавлений в избранное'
